@@ -33,8 +33,8 @@ const resolvers = {
         heroes: async () => {
             return await models.Hero.find();
         },
-        hero: (parent, args) => {
-            return heroes.find(hero => hero.id === args.id );
+        hero: async (parent, args) => {
+            return await models.Hero.findById(args.id);
         }
     },
 

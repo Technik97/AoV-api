@@ -1,54 +1,14 @@
 const express = require('express');
-const { ApolloServer, gql } = require('apollo-server-express');
+const { ApolloServer } = require('apollo-server-express');
 require('dotenv').config();
 
 const db = require('./db');
 const models = require('./models');
+const typeDefs = require('./schema');
+const resolvers = require('./resolvers');
 
 const DB_HOST = process.env.DB_HOST;
-
-//construct a schema
-const typeDefs = gql`
-    type Query {
-        hello: String
-        heroes: [Hero!]!
-        hero(id: ID!): Hero
-    }
-
-    type Hero {
-        id: ID!
-        name: String!
-        category: String!
-        role: String!
-    }
-
-    type Mutation {
-        newHero(name: String!, category: String!, role: String!): Hero!
-    }
-`;
-
-const resolvers = {
-    Query: {
-        hello: () => 'Hello World!',
-        heroes: async () => {
-            return await models.Hero.find();
-        },
-        hero: async (parent, args) => {
-            return await models.Hero.findById(args.id);
-        }
-    },
-
-    Mutation: {
-        newHero: async (parent, args) => {
-            return await models.Hero.create({
-                name: args.name,
-                category: args.category,
-                role: args.role
-            });
-        }
-    }
-}
-
+ 
 
 const app = express();
 
@@ -57,7 +17,14 @@ const port = process.env.PORT || 4000;
 db.connect(DB_HOST);
 
 //Apollo Server setup
-const server = new ApolloServer({ typeDefs, resolvers });
+const server = new ApolloServer({ 
+    typeDefs, 
+    resolvers,
+    context: () => {
+        //Add the db models to the context
+        return { models };
+    }
+});
 
 //Apply the Apollo GraphQL middleware and set the path to /api
 server.applyMiddleware({ app, path: '/api' })

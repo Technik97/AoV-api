@@ -16,5 +16,7 @@ type Hero {
 
 type Mutation {
     newHero(name: String!, category: String!, role: String!): Hero!
+    updateHero(id: ID!, role: String!): Hero!
+    deleteHero(id: ID!): Boolean!
 }
 `;

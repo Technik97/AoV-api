@@ -2,9 +2,11 @@ const { gql } = require('apollo-server-express');
 
 module.exports = gql`
 type Query {
-    hello: String
     heroes: [Hero!]!
     hero(id: ID!): Hero
+    user(username: String!): User
+    users: [User!]!
+    me: User!
 }
 
 type Hero {
@@ -12,6 +14,9 @@ type Hero {
     name: String!
     category: String!
     role: String!
+    favoriteCount: Int!
+    commentCount: Int!
+    comments: [Comment]
 }
 
 type User {
@@ -21,11 +26,17 @@ type User {
     favHeroes: [Hero!]!
 }
 
+type Comment {
+    content: String!
+    author: User!
+}
+
 type Mutation {
     newHero(name: String!, category: String!, role: String!): Hero!
     updateHero(id: ID!, role: String!): Hero!
     deleteHero(id: ID!): Boolean!
     signUp(username: String!, password: String!): String!
     signIn(username: String, password: String!): String!
+    toggleFavorite(id: ID!): Hero!
 }
 `;

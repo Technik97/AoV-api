@@ -13,6 +13,13 @@ const heroSchema = new mongoose.Schema(
         role: {
             type: String,
             required: true
+        },
+        favoriteCount: {
+            type: Number,
+            default: 0
+        },
+        comments: {
+            type: String,
         }
     },
     {

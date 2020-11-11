@@ -7,7 +7,7 @@ const db = require('./db');
 const models = require('./models');
 const typeDefs = require('./schema');
 const resolvers = require('./resolvers');
-const { Token } = require('graphql');
+
 
 const DB_HOST = process.env.DB_HOST;
 

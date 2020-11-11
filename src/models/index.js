@@ -1,9 +1,11 @@
 const Hero = require('./hero');
 const User = require('./user');
+const Comment = require('./comment');
 
 const models = {
     Hero,
-    User
+    User,
+    Comment
 };
 
 module.exports = models;
